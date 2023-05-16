@@ -7,8 +7,6 @@
 	let name = '';
 
 	const onSubmit = (e) => {
-		// const name = 'User-N';
-		console.log('submit')
 		promise = fetch('/scores/', {
 			method: 'POST', 
 			headers: { 'Content-Type': 'application/json' }, 
