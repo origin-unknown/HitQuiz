@@ -84,7 +84,7 @@
 				<InfoScreen success={score > 1}>
 					<h1>{#if score > 0}Congratulations!{:else}Sorry!{/if}</h1>
 					<p>You finished the quiz with {score} points.</p>
-					<ScoreForm success={score >= 0} />
+					<ScoreForm success={score > 0} />
 					<button on:click={onClick}>Try Again</button>
 				</InfoScreen>
 			{:else if state == 1}

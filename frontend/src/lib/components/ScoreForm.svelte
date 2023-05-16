@@ -25,7 +25,14 @@
 	{#if success}
 		<form on:submit|preventDefault={onSubmit}>
 			<div class="input-group">
-				<input type="text" bind:value={name} placeholder="user123" />
+				<input 
+					type="text" 
+					bind:value={name} 
+					placeholder="user123" 
+					minlength="3" 
+					maxlength="8" 
+					pattern="[A-Za-z]+[A-Za-z\-\_]*[0-9]*"
+				/>
 				<button type="submit">Send</button>
 			</div>
 		</form>

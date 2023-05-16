@@ -27,7 +27,7 @@ def create():
 	points = session.get('points', 0)
 
 	# use webargs
-	if points >= 50 and len(name.strip()) > 3:
+	if points >= 50 and len(name.strip()) >= 3:
 		score = Score(name=name, points=points)
 		db.session.add(score)
 		db.session.commit()
