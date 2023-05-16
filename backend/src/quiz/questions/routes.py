@@ -1,5 +1,9 @@
 from .. import db
-from .constants import LEVELS
+from .constants import (
+	LEVELS, 
+	POINTS_PER_QUESTION, 
+	QUESTIONS_PER_LEVEL
+)
 from .models import Hit
 from flask import (
 	Blueprint, 
@@ -18,7 +22,7 @@ blueprint = Blueprint(
 )
 
 @blueprint.route('/')
-def quiz(): # index
+def index():
 	level = session['level'] = 1
 	points = session['points'] = 0
 
@@ -75,7 +79,7 @@ def quiz(): # index
 
 
 @blueprint.post('/')
-def quiz_solve(): # update
+def update(): 
 	level = session.get('level', 1)
 	points = session.get('points', 0)
 	qid = session.get('qid')
@@ -84,10 +88,9 @@ def quiz_solve(): # update
 	q = Hit.query.get_or_404(qid)
 	if request.json.get('value', '') == q.artist: 
 		session['qids'].append(q.id) 
-		# points = session['points'] = (points + 10) 
-		# if points >= level*50: 
-		points = session['points'] = (points + level*10)
-		if points >= sum(x*5*10 for x in range(level + 1)): 
+		session.modified = True
+		points = session['points'] = (points + level*POINTS_PER_QUESTION)
+		if points >= sum(QUESTIONS_PER_LEVEL*x*POINTS_PER_QUESTION for x in range(level + 1)): 
 			level = session['level'] = level + 1
 			session['qids'] = []
 
@@ -156,14 +159,3 @@ def quiz_solve(): # update
 		alternatives=alternatives if not done else [],
 		finished=done
 	)
-
-# ---
-
-from .schemas import HitSchema
-
-@blueprint.route('/hits')
-def index():
-	hits = Hit.query.all()
-	hits_schema = HitSchema(many=True)
-	return hits_schema.jsonify(hits)
-

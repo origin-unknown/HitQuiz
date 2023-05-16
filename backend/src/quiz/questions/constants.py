@@ -10,3 +10,7 @@ LEVELS = {
 	9: {'peak': 5, 'weeks': 3, 'f_range': 1958,'t_range': 2020},
 	10: {'peak': 6, 'weeks': 3, 'f_range': 1958,'t_range': 2020}
 }
+
+POINTS_PER_QUESTION = 10 
+
+QUESTIONS_PER_LEVEL = 5 

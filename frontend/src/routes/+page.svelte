@@ -10,13 +10,13 @@
 	let timer = null;
 
 	let promise = fetch('/questions/').then(x => x.json());
-	
-	function startTimer() {
+
+	const startTimer = () => {
 		timer.reset();
 		timer.start();
 	}
-
-	function onSubmit(e) {
+	
+	const onSubmit = (e) => {
 		const {submitter} = e;
 		timer.stop();
 		promise = fetch('/questions/', {
@@ -24,26 +24,26 @@
 			headers: { 'Content-Type': 'application/json' }, 
 			body: JSON.stringify({ value: submitter.value })
 		}).then(x => x.json());
-	}
+	};
 
-	function onClick() {
+	const onClick = () => {
 		state = 1;
 		timer.reset();
 		promise = fetch('/questions/').then(x => x.json());
-	}
+	};
 
-	function onHide() {
+	const onHide = () => {
 		state = 0;
 		startTimer();
-	}
+	};
 
-	function onStop() {
+	const onStop = () => {
 		promise = fetch('/questions/', {
 			method: 'post', 
 			headers: { 'Content-Type': 'application/json' }, 
 			body: JSON.stringify({ value: '' })
 		}).then(x => x.json());
-	}
+	};
 
 	$: promise.then(data => { 
 		if (score != data.points) score = data.points;
