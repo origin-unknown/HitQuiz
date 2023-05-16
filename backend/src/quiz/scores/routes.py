@@ -7,6 +7,7 @@ from flask import (
 	request, 
 	session
 )
+import re
 
 
 blueprint = Blueprint(
@@ -27,7 +28,10 @@ def create():
 	points = session.get('points', 0)
 
 	# use webargs
-	if points >= 50 and len(name.strip()) >= 3:
+	if points >= 50 \
+		and 3 <= len(name.strip()) <= 8 \
+		and re.match(r'^[A-Za-z]+[A-Za-z\-\_]*[0-9]*', name.strip()):
+		
 		score = Score(name=name, points=points)
 		db.session.add(score)
 		db.session.commit()
