@@ -90,7 +90,7 @@ def update():
 		session['qids'].append(q.id) 
 		session.modified = True
 		points = session['points'] = (points + level*POINTS_PER_QUESTION)
-		if points >= sum(QUESTIONS_PER_LEVEL*x*POINTS_PER_QUESTION for x in range(level + 1)): 
+		if points >= sum(QUESTIONS_PER_LEVEL*x*POINTS_PER_QUESTION for x in range(1, level + 1)): 
 			level = session['level'] = level + 1
 			session['qids'] = []
 
