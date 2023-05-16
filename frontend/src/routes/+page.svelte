@@ -3,6 +3,7 @@
 	import { Confetti } from 'svelte-confetti';
 	import InfoScreen from '$lib/components/InfoScreen.svelte';
 	import Timer from '$lib/components/Timer.svelte';
+	import ScoreForm from '$lib/components/ScoreForm.svelte';
 
 	let state = 1;
 	let score = 0;
@@ -83,6 +84,7 @@
 				<InfoScreen success={score > 1}>
 					<h1>{#if score > 0}Congratulations!{:else}Sorry!{/if}</h1>
 					<p>You finished the quiz with {score} points.</p>
+					<ScoreForm success={score >= 0} />
 					<button on:click={onClick}>Try Again</button>
 				</InfoScreen>
 			{:else if state == 1}

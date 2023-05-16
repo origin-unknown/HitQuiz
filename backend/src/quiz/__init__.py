@@ -27,6 +27,7 @@ def register_blueprints(app):
 	mods = (
 		('.main', {}),
 		('.questions', {}),
+		('.scores', {}),
 	)
 	for ident,kwargs in mods:
 		module = import_module(ident, __name__)
