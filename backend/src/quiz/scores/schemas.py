@@ -15,3 +15,7 @@ class ScoreSchema(ma.SQLAlchemyAutoSchema):
 	)
 	
 	points = ma.Integer(required=False)
+
+class RankSchema(ma.Schema):
+	class Meta:
+		fields = ('name', 'points', 'rank')
