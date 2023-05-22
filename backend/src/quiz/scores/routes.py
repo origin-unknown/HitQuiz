@@ -1,12 +1,13 @@
 from .. import db
 from .models import Score
-from .schemas import ScoreSchema
+from .schemas import RankSchema
 from flask import (
 	Blueprint, 
 	jsonify, 
 	request, 
 	session
 )
+from sqlalchemy import func
 import re
 
 
@@ -18,43 +19,6 @@ blueprint = Blueprint(
 
 @blueprint.route('/')
 def index():
-	scores = Score.query.order_by(Score.points.desc()).limit(10).all()
-	scores_schema = ScoreSchema(many=True)
-	return scores_schema.jsonify(scores)
-
-@blueprint.post('/')
-def create():
-	name = request.json.get('name', '')
-	points = session.get('points', 0)
-
-	# use webargs
-	if points >= 50 \
-		and 3 <= len(name.strip()) <= 8 \
-		and re.match(r'^[A-Za-z]+[A-Za-z\-\_]*[0-9]*', name.strip()):
-		
-		score = Score(name=name, points=points)
-		db.session.add(score)
-		db.session.commit()
-
-	scores = Score.query.order_by(Score.points.desc()).limit(10).all()
-	scores_schema = ScoreSchema(many=True)
-	return scores_schema.jsonify(scores)
-
-# ---
-# Devlopment version
-# 
-# Show new entry in leaderboard.
-# 
-# Problems:
-# - is new entry realy visible in table (Yes)
-# - how to format high ranking numbers in table
-
-
-from sqlalchemy import func
-from .schemas import RankSchema
-
-@blueprint.route('/test')
-def test_index():
 	rankings = Score.query.with_entities(
 		Score.id, 
 		Score.name, 
@@ -65,8 +29,8 @@ def test_index():
 	scores_schema = RankSchema(many=True)
 	return scores_schema.jsonify(rankings)
 
-@blueprint.post('/test')
-def test_create():
+@blueprint.post('/')
+def create():
 	name = request.json.get('name', '')
 	points = session.get('points', 0)
 

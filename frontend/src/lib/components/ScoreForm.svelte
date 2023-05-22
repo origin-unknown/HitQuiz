@@ -2,12 +2,12 @@
 	
 	export let success = false;
 
-	let promise = fetch('/scores/test').then(x => x.json());
+	let promise = fetch('/scores/').then(x => x.json());
 	let scores = [];
 	let name = '';
 
 	const onSubmit = (e) => {
-		promise = fetch('/scores/test', {
+		promise = fetch('/scores/', {
 			method: 'POST', 
 			headers: { 'Content-Type': 'application/json' }, 
 			body: JSON.stringify({ name: name })
