@@ -66,6 +66,7 @@
 		display: inline-block;
 		overflow: auto;
 		height: 128px;
+/*		height: 210px;*/
 		margin: 0.64rem 0;
 	}
 
@@ -80,6 +81,7 @@
 	table {
 		width: 100%;
 		border-collapse: collapse;
+/*		font-size: 0.84em;*/
 	}
 	table, th, td {
  		border: 1px solid;
