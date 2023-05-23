@@ -5,7 +5,8 @@ from flask import (
 	Blueprint, 
 	jsonify, 
 	request, 
-	session
+	session, 
+	url_for
 )
 from sqlalchemy import func
 import re
@@ -19,15 +20,24 @@ blueprint = Blueprint(
 
 @blueprint.route('/')
 def index():
-	rankings = Score.query.with_entities(
+	page = request.args.get('page', 0, type=int)
+
+	ranks = Score.query.with_entities(
 		Score.id, 
 		Score.name, 
 		Score.points, 
 		func.row_number().over(order_by=Score.points.desc()).label('rank'), 
-	).order_by(Score.points.desc()).limit(10).all()
+	).order_by(Score.points.desc()).limit(10).offset(page*10).all()
+	
+	meta = {}
+	if len(ranks) == 10: 
+		meta['next'] = url_for('.index', page=page+1)
 
 	scores_schema = RankSchema(many=True)
-	return scores_schema.jsonify(rankings)
+	return jsonify(
+		data=scores_schema.dump(ranks), 
+		meta=meta 
+	)
 
 @blueprint.post('/')
 def create():
@@ -55,5 +65,14 @@ def create():
 		func.row_number().over(order_by=Score.points.desc()).label('rank'), 
 	).order_by(Score.points.desc()).slice(start_rank - 1, end_rank).all()
 
+	meta = {}
+	if score:
+		meta['current_id'] = score.id
+
 	scores_schema = RankSchema(many=True)
-	return scores_schema.jsonify(ranks)
+	# return scores_schema.jsonify(ranks)
+	return jsonify(
+		data=scores_schema.dump(ranks), 
+		meta=meta
+	)
+
