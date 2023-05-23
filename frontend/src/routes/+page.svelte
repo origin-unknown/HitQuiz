@@ -93,6 +93,10 @@
 	};
 </script>
 
+<svelte:head>
+  <title>hitQuiz</title>
+</svelte:head>
+
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="app" style:background-color={$background}>
@@ -108,8 +112,13 @@
 					<div>Score: <span in:fade={{ delay: 100, duration: 800 }}>{score}</span></div>
 				{/key}
 				{#key state}
-				<button class="i-btn" on:click={showModal} disabled={state == 0} title="Leaderboard"
-					transition:scale>i</button>
+					<button 
+						class="i-btn" 
+						on:click={showModal} 
+						disabled={state == 0} 
+						title="Leaderboard"
+						transition:scale
+					>i</button>
 				{/key}
 			</div>
 		</div>
